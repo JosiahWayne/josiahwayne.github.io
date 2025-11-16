@@ -1,0 +1,435 @@
+:root {
+  --bg: #1e1e1e;
+  --bg-alt: #252526;
+  --sidebar-bg: #252526;
+  --border: #333333;
+  --accent: #007acc;
+  --text: #d4d4d4;
+  --text-muted: #9f9f9f;
+  --terminal-bg: #1e1e1e;
+  --terminal-text: #d4d4d4;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000;
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.vscode-window {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* max-width: 1200px; */
+  margin: 0 auto;
+  height: 100vh;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+/* titlebar */
+
+.titlebar {
+  height: 32px;
+  background: #3c3c3c;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.titlebar-left,
+.titlebar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 160px;
+}
+
+.titlebar-center {
+  flex: 1;
+  text-align: center;
+}
+
+.traffic-light {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  margin-right: 4px;
+}
+
+.traffic-light.red {
+  background: #ff5f56;
+}
+.traffic-light.yellow {
+  background: #ffbd2e;
+}
+.traffic-light.green {
+  background: #27c93f;
+}
+
+/* main layout */
+
+.vscode-main {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+/* sidebar */
+
+.sidebar {
+  width: 220px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  padding: 8px 8px 0 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.sidebar-title {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.sidebar-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-item {
+  padding: 2px 4px;
+  border-radius: 3px;
+  cursor: default;
+}
+
+.sidebar-item:hover {
+  background: #2a2d2e;
+}
+
+/* editor */
+
+.editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-alt);
+}
+
+.editor-tabbar {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  background: #252526;
+  scrollbar-width: none;
+}
+
+.editor-tab {
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-right: 1px solid var(--border);
+}
+
+.editor-tab.active {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.editor-content {
+  flex: 1;
+  padding: 16px 20px;
+  font-size: 14px;
+  overflow-y: auto;
+}
+
+.editor-content h1 {
+  font-size: 22px;
+  margin-top: 0;
+}
+
+.editor-content pre {
+  background: #1e1e1e;
+  padding: 10px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  overflow-x: auto;
+}
+
+.editor-content.preview,
+.terminal-output{
+  scrollbar-color: var(--sb-thumb) var(--sb-track);
+  scrollbar-width: thin;
+}
+
+/* terminal */
+
+.terminal {
+  border-top: 1px solid var(--border);
+  background: var(--terminal-bg);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  height: 180px;
+}
+
+.terminal-header {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.terminal-output {
+  flex: 1;
+  padding: 8px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.terminal-line {
+  display: flex;
+  align-items: baseline;
+}
+
+.terminal-line span {
+  margin-right: 4px;
+}
+
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-top: 1px solid var(--border);
+}
+
+.terminal-prompt {
+  color: #4ec9b0;
+  margin-right: 6px;
+}
+
+.terminal-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--terminal-text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  outline: none;
+}
+
+/* terminal messages */
+
+.terminal-output .command {
+  color: var(--text);
+}
+
+.terminal-output .output {
+  color: var(--terminal-text);
+}
+
+.terminal-output .output-muted {
+  color: var(--text-muted);
+}
+
+.terminal-output .output-error {
+  color: #f44747;
+}
+
+.terminal-output .output-highlight {
+  color: var(--accent);
+}
+
+/* small screens */
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+}
+
+/* ====== Tabs ====== */
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  height: 32px;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-right: 1px solid var(--border);
+  background: #252526;
+  cursor: pointer;
+  user-select: none;
+}
+.tab.active {
+  background: var(--bg);
+  color: var(--text);
+}
+.tab .close {
+  opacity: 0.7;
+}
+.tab:hover .close {
+  opacity: 1;
+}
+
+/* ====== Preview ====== */
+.preview {
+  line-height: 1.6;
+}
+.preview h1, .preview h2, .preview h3 {
+  margin-top: 1em;
+}
+.preview pre code {
+  display: block;
+  padding: 12px;
+  border-radius: 6px;
+  background: #1e1e1e;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.preview code {
+  background: #1e1e1e;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+.preview blockquote {
+  margin: 0;
+  padding-left: 12px;
+  border-left: 3px solid #3a3a3a;
+  color: var(--text-muted);
+}
+
+/*
+.sidebar-item {
+  padding: 4px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.sidebar-item:hover { background: #2a2d2e; }
+.sidebar-item.folder { color: #9fd3ff; }
+.sidebar-item.file { color: var(--text); }
+
+.editor {
+  display: flex;
+  flex-direction: column;
+}
+.editor-content.preview {
+  flex: 1;
+  overflow: auto;
+  padding: 0 0 16px 0;
+}
+
+.pdf-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.pdf-viewer {
+  padding: 12px 0 24px;
+}
+.pdf-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto 12px;
+  background: #1e1e1e;
+  border-radius: 4px;
+}
+  */
+
+/* 尺寸变量（默认值） */
+:root {
+  --sidebar-width: 220px;
+  --terminal-height: 220px;
+  --resizer-size: 4px;
+}
+
+/* 布局：main 横向排，sidebar 固定宽度，editor 占满 */
+.vscode-main {
+  display: flex;
+  min-height: 0;
+  height: calc(100vh - 32px - var(--terminal-height) - var(--resizer-size)); /* 32px=titlebar */
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  min-width: 140px;
+  max-width: 60vw;
+}
+
+/* 竖向分隔条：拖拽改变 sidebar 宽度 */
+.resizer-vertical {
+  width: var(--resizer-size);
+  cursor: col-resize;
+  background: transparent;
+}
+.resizer-vertical:hover,
+.resizer-vertical.dragging { background: #2a2d2e; }
+
+/* 横向分隔条：拖拽改变 terminal 高度 */
+.resizer-horizontal {
+  height: var(--resizer-size);
+  cursor: row-resize;
+  background: transparent;
+  border-top: 1px solid var(--border);
+}
+.resizer-horizontal:hover,
+.resizer-horizontal.dragging { background: #2a2d2e; }
+
+/* 终端高度由变量控制 */
+.terminal {
+  height: var(--terminal-height);
+  min-height: 120px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 让编辑器区垂直撑满（上面已用 calc 扣掉 terminal 高度） */
+.editor { display: flex; flex-direction: column; }
+.editor-content.preview { flex: 1; overflow: auto; }
