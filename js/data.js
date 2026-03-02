@@ -1,33 +1,10 @@
 // js/data.js
 
-export const FILES = [
-  {
-    id: "readme",
-    virtualPath: "README.md",
-    filePath: "content/README.md",
-    type: "markdown"
-  },
-  /*
-  {
-    id: "latex-derivation",
-    virtualPath: "math/derivation.tex",
-    filePath: "content/math/derivation.tex",
-    type: "latex"
-  },
-  {
-    id: "example-py",
-    virtualPath: "src/example.py",
-    filePath: "content/src/example.py",
-    type: "code"
-  },
-  */
-  {
-    id: "Resume",
-    virtualPath: "src/Resume.pdf",
-    filePath: "content/CV_2025_Fall.pdf",
-    type: "pdf"
-  }
-];
+export async function loadFiles(path = "content/files.json") {
+  const res = await fetch(path);
+  if (!res.ok) throw new Error(`Failed to load ${path}`);
+  return res.json();
+}
 
 export function inferTypeFromPath(path) {
   if (!path) return "text";
@@ -46,7 +23,7 @@ export function inferTypeFromPath(path) {
   return "text";
 }
 
-export function buildTree(files = FILES) {
+export function buildTree(files) {
   const tree = {};
   for (const f of files) {
     const parts = f.virtualPath.split("/");

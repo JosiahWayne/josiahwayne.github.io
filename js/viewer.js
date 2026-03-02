@@ -2,8 +2,10 @@
 import { inferTypeFromPath } from "./data.js";
 
 const cache = new Map(); // path -> text content
+let currentRequestId = 0; // 用于处理竞态条件
 
 export function renderFile({ file, container }) {
+  const requestId = ++currentRequestId;
   container.innerHTML = "";
 
   if (!file) {
@@ -31,11 +33,17 @@ export function renderFile({ file, container }) {
     })
     .then((text) => {
       cache.set(path, text);
-      renderText({ file, text, container });
+      // 只有当这个请求仍然是最新的才渲染
+      if (requestId === currentRequestId) {
+        renderText({ file, text, container });
+      }
     })
     .catch((err) => {
       console.error(err);
-      container.innerHTML = `<p class='output-error'>Failed to load file: ${path}</p>`;
+      // 只有当这个请求仍然是最新的才显示错误
+      if (requestId === currentRequestId) {
+        container.innerHTML = `<p class='output-error'>Failed to load file: ${path}</p>`;
+      }
     });
 }
 
@@ -48,6 +56,7 @@ function renderText({ file, text, container }) {
       headerIds: true,
       breaks: true,
       highlight: (code, lang) => {
+        if (!window.hljs) return code;
         try { return hljs.highlight(code, { language: lang }).value; }
         catch { return hljs.highlightAuto(code).value; }
       }
@@ -71,12 +80,15 @@ function renderText({ file, text, container }) {
   }
 
   if (type === "text" || type === "code") {
+    container.innerHTML = ""; // Clean up pre loading messages
     const pre = document.createElement("pre");
     const code = document.createElement("code");
     code.textContent = text;
     pre.appendChild(code);
     container.appendChild(pre);
-    hljs.highlightElement(code);
+    if (window.hljs) {
+      hljs.highlightElement(code);
+    }
     return;
   }
 
@@ -108,7 +120,7 @@ function renderPDF(url, container) {
 
   const iframe = document.createElement("iframe");
   iframe.className = "pdf-frame";
-  iframe.src = `${url}#view=FitH`; // 打开适配宽度
+  iframe.src = `${url}#zoom=100&toolbar=0`; // 隐藏工具栏
   iframe.setAttribute("title", "PDF preview");
   iframe.setAttribute("loading", "lazy");
   iframe.style.width = "100%";

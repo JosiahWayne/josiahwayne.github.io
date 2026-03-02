@@ -1,0 +1,20 @@
+[
+  {
+    "id": "readme",
+    "virtualPath": "README.md",
+    "filePath": "content/README.md",
+    "type": "markdown"
+  },
+  {
+    "id": "example-py",
+    "virtualPath": "src/example.py",
+    "filePath": "content/src/example.py",
+    "type": "code"
+  },
+  {
+    "id": "Resume",
+    "virtualPath": "Resume.pdf",
+    "filePath": "content/CV_2026_Spring.pdf",
+    "type": "pdf"
+  }
+]

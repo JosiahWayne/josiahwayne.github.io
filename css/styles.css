@@ -51,7 +51,7 @@ body {
 /* titlebar */
 
 .titlebar {
-  height: 32px;
+  height: 6px;
   background: #3c3c3c;
   display: flex;
   align-items: center;
@@ -59,6 +59,25 @@ body {
   font-size: 12px;
   color: var(--text-muted);
   user-select: none;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.titlebar.expanded {
+  height: 32px;
+}
+
+.titlebar-left,
+.titlebar-center,
+.titlebar-right {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.titlebar.expanded .titlebar-left,
+.titlebar.expanded .titlebar-center,
+.titlebar.expanded .titlebar-right {
+  opacity: 1;
 }
 
 .titlebar-left,
@@ -132,6 +151,54 @@ body {
 
 .sidebar-item:hover {
   background: #2a2d2e;
+}
+
+/* 文件夹展开/折叠 */
+.sidebar-item.folder {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.folder-arrow {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 2px;
+  position: relative;
+}
+
+.folder-arrow::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  border: 4px solid transparent;
+  border-left: 5px solid var(--text-muted);
+  transition: transform 0.15s ease;
+}
+
+.sidebar-item.folder.expanded .folder-arrow::before {
+  transform: rotate(90deg);
+  left: 3px;
+  top: 6px;
+}
+
+.folder-name {
+  color: #cccccc;
+}
+
+.folder-children {
+  padding-left: 12px;
+}
+
+.folder-children.collapsed {
+  display: none;
+}
+
+.sidebar-item.file {
+  padding-left: 22px;
 }
 
 /* editor */
@@ -385,7 +452,7 @@ body {
 /* 尺寸变量（默认值） */
 :root {
   --sidebar-width: 220px;
-  --terminal-height: 220px;
+  --terminal-height: 120px;
   --resizer-size: 4px;
 }
 
@@ -393,7 +460,7 @@ body {
 .vscode-main {
   display: flex;
   min-height: 0;
-  height: calc(100vh - 32px - var(--terminal-height) - var(--resizer-size)); /* 32px=titlebar */
+  flex: 1;
 }
 
 .sidebar {
@@ -428,6 +495,7 @@ body {
   max-height: 70vh;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
 /* 让编辑器区垂直撑满（上面已用 calc 扣掉 terminal 高度） */
